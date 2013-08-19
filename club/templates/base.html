@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+{% load staticfiles %}
+<head>
+  <title> Book Club </title>
+	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
+			  media="screen" />
+	<script type="text/javascript" src={% static 'js/jquery-1.7.1.js' %}>
+		  </script>
+	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
+			  media="screen" />
+  {% block headers %} {% endblock %}
+
+</head>
+<body>
+<header>
+	<h2 class='topLabel'> A web app for book clubs </h2>
+  <nav>
+	  <ul>
+		  <li><a href="{% url 'club.views.user_home' %}"> You </a></li>	
+		  <li><a href="{% url 'club.views.club_home' club.id|default:1 %}">
+			  Your Club </a></li>
+	    {% if user.is_authenticated %} 
+	      <li class="logout"><a href="{%url 'club.views.logout'%}">
+				  Logout</a></li>
+      {% endif %}
+	  </ul>
+  </nav>
+</header>
+<section id='title'>
+{% block title %} {% endblock %}
+</section>
+<section id='content'>
+{% block content %} {% endblock %}
+</section>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load club_tags %}
+
+{% block title %}
+  <h1>Hey, {{user.username}}</h1>
+{% endblock %}
+
+{% block content %}
+
+<p> Here is where everyone is in {{comments.0.book.title}}</p>
+<ul> 
+  {% for user in max_pages %} 
+	<li> {{user.username}} 
+	  {% if user.page = 0 %} 
+		  has not started.
+	  {% else %}
+		  is on page {{user.cur_page}}
+		{% endif %}
+  </li>
+	{% endfor %}
+</ul>
+
+
+{% if comments|length > 0 %}
+  <p> Here are everyone's comments on {{comments.0.book.title}}</p>
+  {% for comment in comments %}
+    <div class='comment'>
+		  {% if comment.page <= curr_page %} 
+		    On page {{comment.page}}, {{comment.user.username}} said 
+		    <span class='comment_text'>{{comment.comment}}</span>
+		  {% endif %}
+	  </div>
+  {% endfor %}
+  <p> Update your status : </p>
+{% else %}
+  <p> Looks like no one has started?!?  Be the first!</p>
+{% endif %}
+
+<form action="{% url 'club.views.comment' club book %}" 
+          method='POST'/> {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ comment_form.as_p }}
+  <input type='submit' 'value'='Comment!'/>
+</form>
+
+{% endblock %}

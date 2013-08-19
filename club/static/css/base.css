@@ -1,0 +1,92 @@
+
+/*
+ *  brown #8f5127
+ *
+ *  tan e89156
+ *
+ *  green 55a64e
+ *
+ *  dk blue 006482
+ *
+ *  lt blue 008FFF
+ */
+
+
+body { 
+		background-color: #e8b25a;
+		font-family: arial, sans-serif;
+}
+
+/*
+a:link,a:visited {
+		color: #FFB037;
+}
+*/
+
+h2.topLabel { 
+		font-weight: bold;
+		color: #55a64e;
+		margin:0;
+		padding: 2em;
+}
+
+header {
+		background-color: #8f5127;
+}
+
+nav ul {
+		width: 100%;
+}
+
+nav li {
+		float: left;
+		display: block;
+}
+
+nav li a {
+		display: block;
+		padding: 0 2em 0 0;
+		font-family: arial, sans-serif;
+		color: #55a64e;
+		float: left;
+}
+
+nav li a:hover {
+		color: #006482;
+}
+
+nav a:link,a:visited {
+		color: #55a64e;
+}
+
+nav li.logout {
+		float: none;
+}
+
+nav li.logout a { 
+		text-align: center;
+		float: none;
+}
+
+table#content th{
+		vertical-align: top;
+		text-align: right;
+}
+
+.helptext { 
+		font-size: 75%;
+		color: #A22;
+}
+
+/* 
+ * grey-brown #544C35 
+ *
+ * tan #DBB449
+ *
+ * grey-tan #D4BF86
+ *
+ * brown #544928
+ *
+ * grey grey tan A19166
+ */
+

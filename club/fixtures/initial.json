@@ -1,0 +1,18 @@
+[
+{
+  "pk": 1, 
+  "fields": {
+    "name": "Book Club for Men"
+  }, 
+  "model": "club.club"
+},
+{
+  "pk": 1, 
+  "fields": {
+    "join_date": "2013-08-09", 
+    "user": 1, 
+    "club": 1
+  }, 
+  "model": "club.membership"
+}
+]

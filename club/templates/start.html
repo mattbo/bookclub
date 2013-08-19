@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block headers %}
+  <script type="text/javascript" src={% static "js/club.js" %}> </script>
+{% endblock %}
+
+{% block title %}
+  <h1>{{club.name}}</h1>
+{% endblock %}
+
+{% block content %}
+
+	<a href="{% url 'club.views.register' %}">Register</a>
+	<a href="{% url 'django.contrib.auth.views.login' %}">Login</a>
+{% endblock %}

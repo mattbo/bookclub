@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load club_tags %}
+{% load staticfiles %}
+
+{% block headers %}
+  <script type="text/javascript" src={% static "js/club.js" %}>
+    </script>
+{% endblock %}
+
+{% block title %}
+  <h1>{{club.name}}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <ul>
+   {% for book in club.books.all %}
+     <li> {{book.title}} 
+       {% if book.reading.end_date %} (due {{book.reading.end_date}}) 
+       {% elif book.reading.accepted %} (accepted, unscheduled)
+       {% else %} (proposed)
+       {% endif %}
+       <a href="#" class="toggle_form" id='{{book.id}}_edit'>(edit)</a>
+      <div id='{{book.id}}_edit_form' style="display:none">
+        <form action='{% url "club.views.club_home" club.id %}' method='POST'>
+          {{ reading_forms | index_list:forloop.counter0 }}
+          <input value="submit" />
+        </form>
+      </div>
+    </li> 
+
+   {% endfor %}
+  </ul>
+
+  <a href="#" class="toggle_form" id="propose">Propose a new book : </a>
+  <div id="propose_form" style="display:none">
+    <form action='book/' method='POST'/>{% csrf_token %}
+      {{ book_form.as_p }}
+      <input type='submit' 'value'='Comment!'/>
+    </form>
+  </div>
+
+{% endblock %}

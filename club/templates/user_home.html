@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load club_tags %}
+
+{% block title %}
+  <h1>Hey, {{user.username}}</h1>
+{% endblock %}
+
+{% block content %}
+
+{% for book in reads %}
+  <div class='book_status'>
+    {{book.club.name}} is reading {{book.book.title}} 
+
+    <p> {{ book.book | latest_comment:comments }} </p>
+    <p><a href="{% url 'club.views.comment' club.id book.id %}">
+       See everyone's comments </a></p>
+
+    <form action="{% url 'club.views.comment' club.id book.id %}" 
+          method='POST'/> {% csrf_token %}
+      {{ comment_form | index_list:forloop.counter0}}
+      <input type='submit' 'value'='Comment!'/>
+    </form>
+  </div>
+{% endfor %}
+
+{% endblock %}
