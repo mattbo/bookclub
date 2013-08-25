@@ -2,28 +2,29 @@
 {% load staticfiles %}
 <head>
   <title> Book Club </title>
-	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
-			  media="screen" />
-	<script type="text/javascript" src={% static 'js/jquery-1.7.1.js' %}>
-		  </script>
-	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
-			  media="screen" />
+    <link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
+          media="screen" />
+    <script type="text/javascript" src={% static 'js/jquery-1.7.1.js' %}>
+              </script>
+    <link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
+          media="screen" />
   {% block headers %} {% endblock %}
 
 </head>
 <body>
 <header>
-	<h2 class='topLabel'> A web app for book clubs </h2>
+  <h2 class='topLabel'> A web app for book clubs </h2>
   <nav>
-	  <ul>
-		  <li><a href="{% url 'club.views.user_home' %}"> You </a></li>	
-		  <li><a href="{% url 'club.views.club_home' club.id|default:1 %}">
-			  Your Club </a></li>
-	    {% if user.is_authenticated %} 
-	      <li class="logout"><a href="{%url 'club.views.logout'%}">
-				  Logout</a></li>
-      {% endif %}
-	  </ul>
+    <ul>
+      <li><a href="{% url 'club.views.user_home' %}"> You </a></li> 
+      <li><a href="{% url 'club.views.club_home' club.id|default:1 %}">
+            Your Club </a></li>
+      <li class="logout">
+        {% if user.is_authenticated %} 
+          <a href="{%url 'club.views.logout'%}"> Logout</a>
+        {% endif %}
+      </li>
+    </ul>
   </nav>
 </header>
 <section id='title'>

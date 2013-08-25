@@ -96,6 +96,7 @@ def comment(request, club, book):
 
 @login_required
 def add_book(request, club):
+    print("Add_book!")
     if request.method != 'POST':
         raise Http404
     form = forms.BookForm(request.POST)
@@ -104,6 +105,8 @@ def add_book(request, club):
         club_obj = models.Club.objects.get(pk=club)
         r = models.Reading(club=club_obj, book = book, accepted=False)
         r.save()
+        print("saved book")
+    else : print("Bad book!")
 
     return HttpResponseRedirect(reverse(club_home, args=(club,)))
 
