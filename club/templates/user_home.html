@@ -1,26 +1,44 @@
 {% extends "base.html" %}
+{% load bootstrap_toolkit %}
+{% load staticfiles %}
 {% load club_tags %}
 
 {% block title %}
-  <h1>Hey, {{user.username}}</h1>
+  <h2>Hey, {{user.username}}</h1>
 {% endblock %}
 
 {% block content %}
 
-{% for book in reads %}
+{% for r in reads %}
   <div class='book_status'>
-    {{book.club.name}} is reading {{book.book.title}} 
-
-    <p> {{ book.book | latest_comment:comments }} </p>
-    <p><a href="{% url 'club.views.comment' club.id book.id %}">
+    <h2>{{r.obj.club.name}} is reading {{r.obj.book.title}}</h2>
+    <p> 
+      {% if r.page > -1 %} 
+        You're on page {{ r.page }}
+      {% else %} 
+        You haven't started yet
+      {% endif %}
+    </p><p>
+      <button type="button" id={{forloop.counter0}} 
+              class="btn btn-primary toggle_form">Check in!</button>
+    </p>
+    <form role="form" action="{% url 'club.views.user_home' %}" 
+          method='POST'/> {% csrf_token %} 
+      <div id='{{forloop.counter0}}_form' style="display:none">   
+        {{ r.form|as_bootstrap }}
+        <div class="form-actions">
+          <button type='submit' class="btn btn-primary" 'value'='Comment!'>
+            Submit </button>
+        </div>
+      </div>
+      <p><a href="{% url 'club.views.comment' club.id r.obj.id %}">
        See everyone's comments </a></p>
 
-    <form action="{% url 'club.views.comment' club.id book.id %}" 
-          method='POST'/> {% csrf_token %}
-      {{ comment_form | index_list:forloop.counter0}}
-      <input type='submit' 'value'='Comment!'/>
-    </form>
-  </div>
-{% endfor %}
+    </div>
+  {% endfor %}
+</form>
 
+{% endblock %}
+{% block extra-js %}
+<script  src={% static 'js/club.js' %}> </script>
 {% endblock %}

@@ -1,43 +1,51 @@
 {% extends "base.html" %}
 {% load club_tags %}
 {% load staticfiles %}
+{% load bootstrap_toolkit %}
 
 {% block headers %}
-  <script type="text/javascript" src={% static "js/club.js" %}>
-    </script>
 {% endblock %}
 
 {% block title %}
-  <h1>{{club.name}}</h1>
+  <h3>{{club.name}}</h3>
 {% endblock %}
 
 {% block content %}
 
+<form action='{% url "club.views.club_home" club.id %}' role="form" 
+			method='POST'> {% csrf_token %}
+  {{ reading_forms.management_form }}
   <ul>
-   {% for book in club.books.all %}
-     <li> {{book.title}} 
-       {% if book.reading.end_date %} (due {{book.reading.end_date}}) 
-       {% elif book.reading.accepted %} (accepted, unscheduled)
-       {% else %} (proposed)
-       {% endif %}
-       <a href="#" class="toggle_form" id='{{book.id}}_edit'>(edit)</a>
-      <div id='{{book.id}}_edit_form' style="display:none">
-        <form action='{% url "club.views.club_home" club.id %}' method='POST'>
-          {{ reading_forms | index_list:forloop.counter0 }}
-          <input value="submit" />
-        </form>
-      </div>
-    </li> 
-
+   {% for b in club.books.all %}
+     <li> <h3>{{b.title}} </h3>
+  	   <ul class="list-unstyled">
+         <li>{{ reading | reading_status:b.id }}</li>
+         <li>
+					 <button type="button" class="btn btn-primary toggle_form" 
+					 				 id="{{b.id}}_edit">
+					   Edit
+					 </button>
+      		 <div id='{{b.id}}_edit_form' style="display:none">
+          		 {{ reading_forms | index_list:forloop.counter0 }}
+        		   <button type="submit" class="btn btn-primary">Submit</button>
+      		 </div>
+    		 </li> 
+				</ul>
+		  </li>
    {% endfor %}
   </ul>
+</form>
 
   <a href="#" class="toggle_form" id="propose">Propose a new book : </a>
   <div id="propose_form" style="display:none">
-    <form action='book/' method='POST'/>{% csrf_token %}
+    <form action={% url "club.views.club_home" club.id %} 
+				  method='POST'/>{% csrf_token %}
       {{ book_form.as_p }}
       <input type='submit' 'value'='Comment!'/>
     </form>
   </div>
 
+{% endblock %}
+{% block extra-js %}
+  <script  src={% static 'js/club.js' %}> </script>
 {% endblock %}

@@ -121,6 +121,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
+    #MSB added to allow the static file finder to work
+    'bootstrap',
+    'bootstrap_toolkit',
     'club',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

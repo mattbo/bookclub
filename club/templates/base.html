@@ -1,34 +1,59 @@
 <!DOCTYPE HTML>
+{% load bootstrap_toolkit %}
 {% load staticfiles %}
-<head>
+<html></html><head>
   <title> Book Club </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link href={% static 'css/bootstrap-theme.min.css'%} rel="stylesheet" 
+			  media="screen" />
+	<link href={% static 'css/bootstrap.min.css'%} rel="stylesheet" 
+			  media="screen" />
+	<link href={% static 'css/datepicker.css'%} rel="stylesheet" 
+			  media="screen" />
+	<!--
 	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
 			  media="screen" />
-	<script type="text/javascript" src={% static 'js/jquery-1.7.1.js' %}>
-		  </script>
-	<link rel="stylesheet" type="text/css" href={% static "css/base.css" %}
-			  media="screen" />
+	-->
   {% block headers %} {% endblock %}
 
 </head>
-<body>
-<header>
-	<h2 class='topLabel'> A web app for book clubs </h2>
-  <nav>
-	  <ul>
-		  <li><a href="{% url 'club.views.user_home' %}"> You </a></li>	
-		  <li><a href="{% url 'club.views.club_home' club.id|default:1 %}">
-			  Your Club </a></li>
-	    {% if user.is_authenticated %} 
-	      <li class="logout"><a href="{%url 'club.views.logout'%}">
-				  Logout</a></li>
-      {% endif %}
-	  </ul>
-  </nav>
-</header>
-<section id='title'>
-{% block title %} {% endblock %}
-</section>
-<section id='content'>
-{% block content %} {% endblock %}
-</section>
+<body style>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+	  <div class="navbar-header">
+		  <span class="navbar-brand">A web app for book clubs</span>
+		</div>
+	  <div class="navbar-collapse collapse">
+	    <ul class="nav navbar-nav">
+		    <li><a href="{% url 'club.views.user_home' %}"> You </a></li>	
+		    <li><a href="{% url 'club.views.club_home' club.id|default:1 %}">
+			    Your Club </a></li>
+		  </ul>
+	    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %} 
+	        <li><a href="{%url 'club.views.logout'%}">Logout</a></li>
+			  {% else %} 
+				  <li><a href={% url 'django.contrib.auth.views.login' %}>Login</a></li>
+				  <li><a href={% url 'club.views.register' %}>Register</a></li>
+        {% endif %}
+      </ul>
+	  </div>
+  </div>
+</div>
+
+<div class="container">
+	<div class="jumbotron">
+	  {% block title %} {% endblock %}
+	</div>
+  <section id='content'>
+    {% block content %} {% endblock %}
+  </section>
+</div>
+<script  src={% static 'js/jquery-2.0.3.min.js' %}> </script>
+<script  src={% static 'js/bootstrap.min.js' %}> </script>
+<script  src={% static 'datepicker/js/bootstrap-datepicker.js' %}> </script>
+<script  src={% static 'bootstrap_toolkit/js/init_datepicker.js' %}> </script>
+{% block extra-js %} {% endblock %}
+</body>
+</html>

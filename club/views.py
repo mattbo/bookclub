@@ -26,32 +26,79 @@ def logout(request):
 #   form to create a note
 @login_required
 def club_home(request, club):
+    ReadingFormSet = modelformset_factory(models.Reading,
+                                          form=forms.ReadingForm)
+    if request.method == 'POST':
+        form = forms.BookForm(request.POST)
+        if form.is_valid():
+            book = form.save()
+            club_obj = models.Club.objects.get(pk=club)
+            r = models.Reading(club=club_obj, book = book, accepted=False)
+            r.save()
+        formset = ReadingFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+    #either way, drop through and redisplay everything
+
     club = models.Club.objects.get(pk=club)
+    reading = models.Reading.objects.filter(club=club)
+    reading = {r.book.id: r for r in reading}
+    print(reading)
     new_bookform = forms.BookForm()
-    ReadingFormSet = modelformset_factory(models.Reading)
     reading_forms = ReadingFormSet(queryset=club.reading_set.all())
     return render(request, 'club_home.html', {'club':club,
+                                              'reading':reading,
                                               'book_form':new_bookform,
                                               'reading_forms':reading_forms})
 @login_required
 def user_home(request):
+
     #Gather some info
     club = models.Club.objects.filter(members=request.user)
+
     if len(club) > 1:
         return render(request, 'error.html',
                       {'message':"Multiple clubs not yet supported"})
     if len(club) == 0:
         return render(request, 'error.html',
                       {'message': "You're not in any clubs yet!"})
+
+    #First we cheat -- everyone is in the same club
     club = club[0]
+
+    #Next, get a list of what everyone in the club is reading
     reads = models.Reading.objects.filter(club=club)
-    comments = models.Comment.objects.filter(club=club, user=request.user)
-    CommentFormSet = modelformset_factory(models.Comment, extra=len(reads))
-    comment_forms = CommentFormSet(queryset=models.Comment.objects.none())
+
+    if request.method == 'POST':
+        for r in reads:
+            comment_form = forms.CommentForm(request.POST, prefix=r.book.id)
+
+            if comment_form.is_valid():
+                c = comment_form.save(commit=False)
+                c.user = request.user
+                c.save()
+            else:
+                print (comment_form.errors)
+
+        #Fall through and redisplay the page
+
+    #Find the last page this user has read in each book
+    comment_qs = models.Comment.objects.filter(club=club, user=request.user)
+    comment_qs = comment_qs.values('book').annotate(Max('page'))
+    comments = list(comment_qs.all())
+
+    #Build a datastructure that includes a form per book (not per comment!)
+    read_struct = []
+    for r in reads:
+        r_dict = {'obj':r}
+        r_dict['page'] = next((
+            c['page__max'] for c in comments if c['book'] == r.book.id), -1)
+
+        params =  {'club':r.club, 'book':r.book}
+        r_dict['form'] = forms.CommentForm(initial=params , prefix=r.book.id)
+        read_struct.append(r_dict)
     return render(request, 'user_home.html', {'club':club,
-                                              'reads':reads,
-                                              'comment_form':comment_forms,
-                                              'comments':comments})
+                                              'reads':read_struct})
 
 @login_required
 def comment(request, club, book):

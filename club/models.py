@@ -31,8 +31,8 @@ class Comment(models.Model):
     '''Note that this can be used like a checkin -- what page am I on
        the editable=False removes it from forms...'''
     user = models.ForeignKey(User, editable=False)
-    club = models.ForeignKey(Club, editable=False)
-    book = models.ForeignKey(Book, editable=False)
+    club = models.ForeignKey(Club)
+    book = models.ForeignKey(Book)
     page = models.IntegerField()
     comment = models.TextField()
     curr_date = models.DateField(default=datetime.now(), editable=False)
