@@ -65,7 +65,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = '/bookclub/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -83,7 +83,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 's3x2zr2@od%*u-2u8^5ev!!rqi*=bc8ff)$a-#94#7zv$#s+50'
+SECRET_KEY = 'xxxx'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -160,4 +160,4 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/club/'
+LOGIN_REDIRECT_URL = '/club'
