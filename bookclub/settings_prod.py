@@ -24,4 +24,7 @@ STATIC_URL = '/bookclub/static/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 's3x2zr2@od%*u-2u8^5ev!!rqi*=bc8ff)$a-#94#7zv$#s+50'
 
+#LOGIN_URL='/bookclub/accounts/login'
+LOGIN_URL='django.contrib.auth.views.login'
 LOGIN_REDIRECT_URL = '/bookclub/club'
+FORCE_SCRIPT_NAME = '/bookclub'

@@ -169,7 +169,7 @@ def register(request):
                                    club=models.Club.objects.get(pk=1),
                                    join_date=datetime.today())
             m1.save()
-            return HttpResponseRedirect("/club")
+            return HttpResponseRedirect(reverse(user_home))
     else:
         form = UserCreationForm()
     return render(request, "register.html", { 'form':form,})
